@@ -1,0 +1,6 @@
+[package]
+name = "pgen"
+version = "0.0.1"
+authors = ["mwg <mike@goelzer.com>"]
+
+[dependencies]
