@@ -146,29 +146,14 @@ fn rand_password(len: usize) -> String {
     }
 }
 
-fn mk_word_list_vec() -> Vec<String> {
-//    let vec_word_list: Vec<&str> = eff_word_list::WORD_LIST.split("\n").collect();
-    let mut vec_word_list: Vec<String> = vec![];
-    for line in eff_word_list::WORD_LIST.split("\n") {
-        let mut s:String = line.clone().to_string();
-        let mut iter = s.chars();
-        iter.by_ref().nth(5);
-        let ss:String = iter.as_str().to_string();
-        vec_word_list.push( ss );
-    }
-
-    //println!("vec_word_list len = {}, vec_word_list[0] = '{}', vec_word_list[len-1] = '{}'",
-    //         vec_word_list.len(), vec_word_list[0], vec_word_list[vec_word_list.len()-1] );
-    vec_word_list
-}
-
+// Returns 0 to 2^13-1 as an i32
 fn rand_13bits() -> io::Result< i32 > {
     let mut buf = [0 as u8, 0 as u8];
     let mut f = fs::File::open(&Path::new("/dev/random"))?;
     match f.read(&mut buf[..]) {
         Ok(len) => {
             assert_eq!(len,2);
-            let mut i13_bits:i32 = buf[0] as i32 * 32 + buf[1] as i32;
+            let mut i13_bits:i32 = (buf[0] as i32 * 32) + ((buf[1] as i32) % 32);
             assert!(i13_bits >= 0); 
             assert!(i13_bits < 8192);
             Ok(i13_bits)
@@ -182,7 +167,7 @@ fn rand_13bits() -> io::Result< i32 > {
 
 fn rand_words(n: usize) -> Vec<String> {
     let mut v_words: Vec<String>;
-    let vec_word_list: Vec<String> = mk_word_list_vec();
+    let ewords:eff_word_list::EffWordList = eff_word_list::EffWordList::new();
     v_words = vec![];
     loop {
         loop {
@@ -190,13 +175,19 @@ fn rand_words(n: usize) -> Vec<String> {
             match rand_13bits() {
                 Err(why) => { println!("! {:?}",why.kind()); },
                 Ok(i) => {  
-                    if i as usize > vec_word_list.len() { 
+                    if i as usize >= ewords.len() { 
                         continue; 
                     } else {
-                        let s:String = vec_word_list[i as usize].clone();
-                        //let s:String = String::new();
-                        //s.push_str(& vec_word_list[i as usize].clone());
-                        v_words.push(s);  
+                        let sref:&str = ewords.nth(i);
+
+                        //TODO:  replace next 4 lines with sth like
+                        //       let s:String = sref.to_string().chars().by_ref().nth(5).as_str().to_string();
+                        let mut s:String = sref.clone().to_string();
+                        let mut iter = s.chars();
+                        iter.by_ref().nth(5);
+                        let ss:String = iter.as_str().to_string();
+
+                        v_words.push(ss);
                         break;
                     }
                 }   
@@ -281,6 +272,7 @@ fn main() {
 }
 
 // TODO:
+//   - Eliminate Makefile in favor of `carbo build`
 //   - Get rid of unrwraps => enum Option<T> / match instead 
 //   (https://blog.burntsushi.net/rust-error-handling/#the-basics)
 //   - Get rid of all compiler directives
@@ -289,11 +281,6 @@ fn main() {
 //       - Perhaps have methods to return a character (with 1/l issued handled),
 //       or an EFF word, or an upper_or_digit, etc
 //       - Perhaps return a tuple of {random value , entropy}
-//   - String vs str references
-//   - & in fn args
 //   - actually understand 'static and other lifetimes
 //   - Get rid of all compiler directive plugin stuff like allow_unreachable
-//   - Shouldn't need to copy the whole word list to a new array
 //   - Learn rust macros!
-//   - str vs String "rules":  http://www.ameyalokare.com/rust/2017/10/12/rust-str-vs-String.html
-//
