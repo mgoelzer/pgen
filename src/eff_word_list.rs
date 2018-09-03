@@ -10,14 +10,6 @@ impl EffWordList {
             WORD_LIST
             .lines()
             .collect();
-        //assert_eq!(_vec_word_list[_vec_word_list.len()-1], "66666\tzoom");
-        //println!(concat!("_vec_word_list.len() = {}\n",
-        //    "_vec_word_list[_vec_word_list.len()-1] = '{}'\n",
-        //    "_vec_word_list[_vec_word_list.len()-2] = '{}'"),
-        //    _vec_word_list.len(),
-        //    _vec_word_list[_vec_word_list.len()-1],
-        //    _vec_word_list[_vec_word_list.len()-2]
-        //);
         EffWordList{ vec_word_list: _vec_word_list }
     }
 
@@ -35,9 +27,11 @@ impl EffWordList {
 }
 
 /*
-fn test_main() {
-    let ewords:EffWordList = EffWordList::new();
-    let s:&str = ewords.nth(7775);
-    println!("s = {}", s);
-}
+ * Example usage of EffWordList
+ *
+ * {
+ *   let ewords:EffWordList = EffWordList::new();
+ *   let s:&str = ewords.nth(7775);
+ *   println!("s = {}", s);
+ * }
 */
