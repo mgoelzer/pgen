@@ -9,6 +9,7 @@ $ ./pgen 20
   m9>OSizZ$h6?LM=mRAV~ (entropy: 128.8 bits)
   Y8BQWSVBJYWS32H9YJVF (entropy: 102.600006 bits)
   YY7YB-4MKIE-PLGGJ-THIRI (entropy: 103.4 bits)
+  glorify-moonlike-posing (entropy: 38.760002 bits)
 ```
 
 ## How it works
