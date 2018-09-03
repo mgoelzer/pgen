@@ -20,4 +20,8 @@ Some common difficult-to-read characters (such as 'l' and '1') are excluded from
 
 ## How to build
 
-Clone the repo and run `make`
+Typical rust (cargo) build process.  Just the repo and run: 
+```
+cargo build
+./target/debug/pgen 20
+```

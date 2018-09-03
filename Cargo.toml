@@ -1,6 +1,7 @@
 [package]
 name = "pgen"
 version = "0.0.1"
-authors = ["mwg <mike@goelzer.com>"]
+authors = ["Michael Goelzer <mike@goelzer.com>"]
 
 [dependencies]
+rand = "0.5"
